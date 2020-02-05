@@ -253,6 +253,7 @@ for i in range (0,(best_features_number)):
     select_feature = SelectKBest(chi2, k=n_features)
     for item, item_name in zip(alg_array, alg_array_names): 
         for n in range(0,n_times):
+          
             #5-Cross validation
             kf = StratifiedKFold(n_splits=5, shuffle=True,random_state=n)
 
@@ -261,7 +262,7 @@ for i in range (0,(best_features_number)):
             
             #Obtain f1_score
             scores = cross_val_score(pipe, wrist_X, wrist_Y, cv =kf, scoring = 'f1_macro')
-            print(scores)
+
             #Average F1 values for n_times
             average_score = np.mean(scores)*100
             array_dict_pre_mean[item_name].append(average_score)
