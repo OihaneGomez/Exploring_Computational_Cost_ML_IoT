@@ -33,4 +33,5 @@ In the very first lines of some of the script we have included several variables
 
 * `root` determines the dataset folder, `HMP_Dataset` for the regular sampling and `HMP_Dataset_downsample` for the downsampled version
 * `best_features_number` allows to select the number of features to conssider from the 162 initial subset
-* `n_components` selects the number of signal components to consider, 1 for X and 3 for XYZ (this is specific for the evaluated use case)
+* `number_components` selects the number of signal components to consider, 1 for X and 3 for XYZ (this is specific for the evaluated use case)
+* `n_times` Represents the number of times the cross validation process is performed to obtain the average f1 results

@@ -247,7 +247,7 @@ for i in range (0,(best_features_number)):
         classifier = item
 
         #Calculate fitting time for every algorthm
-        timer = get_ipython().run_line_magic('timeit', '-n 10 -r 3 -o classifier.fit(wrist_X_new, wrist_Y)')
+        timer = get_ipython().run_line_magic('timeit', '-n 3 -r 100 -o classifier.fit(wrist_X_new, wrist_Y)')
         
         #Obtain average and standard deviation values
         timer_avg = (np.mean(timer.timings)*1000)

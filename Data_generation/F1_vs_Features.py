@@ -42,10 +42,10 @@ number_components = 3
 
 #Best feature number 
 #(Max 162 for XYZ, 54 for X)
-best_features_number=4
+best_features_number= 162
 
 #Average results for n_times
-n_times = 2
+n_times = 100
 
 #Dataset folder relative route
 root = '../HMP_Dataset/' #Regular Sampling
@@ -253,7 +253,7 @@ for i in range (0,(best_features_number)):
     select_feature = SelectKBest(chi2, k=n_features)
     for item, item_name in zip(alg_array, alg_array_names): 
         for n in range(0,n_times):
-          
+
             #5-Cross validation
             kf = StratifiedKFold(n_splits=5, shuffle=True,random_state=n)
 

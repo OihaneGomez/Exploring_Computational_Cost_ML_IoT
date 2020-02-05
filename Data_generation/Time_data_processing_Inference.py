@@ -299,7 +299,7 @@ for i in range (0,best_features_number):
 
     #Measure data processing times for inference
     wrist_df_test = gather_one(wrist_class, features=i+1)
-    timer = get_ipython().run_cell_magic('timeit', '-n 10 -r 3 -o', '\nwrist_df_test = gather_one(wrist_class,features=i+1)\nwrist_Y_test = np.asarray(wrist_df_test.iloc[:-1])\nnum_features=len(wrist_df.columns)-1\nwrist_X_test = np.asarray(wrist_df_test.iloc[:,:num_features])\nmin_max_scaler = preprocessing.MinMaxScaler()\nwrist_X_test= min_max_scaler.fit_transform(wrist_df_test.iloc[:,:num_features])\nwrist_X_df_test = pd.DataFrame(wrist_X, columns=(wrist_df_test.iloc[:,:num_features]).columns)')
+    timer = get_ipython().run_cell_magic('timeit', '-n 3 -r 10 -o', '\nwrist_df_test = gather_one(wrist_class,features=i+1)\nwrist_Y_test = np.asarray(wrist_df_test.iloc[:-1])\nnum_features=len(wrist_df.columns)-1\nwrist_X_test = np.asarray(wrist_df_test.iloc[:,:num_features])\nmin_max_scaler = preprocessing.MinMaxScaler()\nwrist_X_test= min_max_scaler.fit_transform(wrist_df_test.iloc[:,:num_features])\nwrist_X_df_test = pd.DataFrame(wrist_X, columns=(wrist_df_test.iloc[:,:num_features]).columns)')
 
     #Obtain average and standard deviation values
     timer_avg = (np.mean(timer.timings))
