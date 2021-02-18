@@ -284,7 +284,7 @@ def reformat (files, features, cls):
     appended_features=[]
 
     for i in range (0, features):
-        appended_features_before = eval(appended_before[features])
+        appended_features_before = eval(appended_before[i])
         appended_features.append(appended_features_before[0])
         appended_features_before=[] 
 
@@ -312,14 +312,39 @@ time_std_array=[]
 
 
 
+"""
+
+if __name__ == "__main__":
+
+
+
+    print ("Number of features: "+str(best_features_number))
+    #Measure data processing times for training the model
+    timer = get_ipython().run_cell_magic('timeit', '-n 10 -r 10 -o', '\nwrist_df = gather(wrist_class,features=best_features_number)\nnum_features=len(wrist_df.columns)-1\nwrist_Y = np.asarray(wrist_df.iloc[:-1])\nwrist_X = np.asarray(wrist_df.iloc[:,:num_features])\nmin_max_scaler = preprocessing.MinMaxScaler()\nwrist_X= min_max_scaler.fit_transform(wrist_df.iloc[:,:num_features])\nwrist_X_df = pd.DataFrame(wrist_X, columns=(wrist_df.iloc[:,:num_features]).columns)\n\n\n\n#wrist_df\n')
+
+    #Obtain average and standard deviation values
+    timer_avg = (np.mean(timer.timings))
+    timer_std = (np.std(timer.timings))
+
+    #Save values array
+    time_avg_array.append(timer_avg)
+    time_std_array.append(timer_std)
+
+    print ("Mean "+ str(timer_avg) + " -- Std "+ str(timer_std))
+
+
+
+"""
+
 
 if __name__ == "__main__":
 
     
+
     for i in range (0,best_features_number):
         print ("Number of features: "+str(i+1))
         #Measure data processing times for training the model
-        timer = get_ipython().run_cell_magic('timeit', '-n 3 -r 10 -o', '\nwrist_df = gather(wrist_class,features=(i+1))\nnum_features=len(wrist_df.columns)-1\nwrist_Y = np.asarray(wrist_df.iloc[:-1])\nwrist_X = np.asarray(wrist_df.iloc[:,:num_features])\nmin_max_scaler = preprocessing.MinMaxScaler()\nwrist_X= min_max_scaler.fit_transform(wrist_df.iloc[:,:num_features])\nwrist_X_df = pd.DataFrame(wrist_X, columns=(wrist_df.iloc[:,:num_features]).columns)\n\n\n\n#wrist_df\n')
+        timer = get_ipython().run_cell_magic('timeit', '-n 10 -r 10 -o', '\nwrist_df = gather(wrist_class,features=(i+1))\nnum_features=len(wrist_df.columns)-1\nwrist_Y = np.asarray(wrist_df.iloc[:-1])\nwrist_X = np.asarray(wrist_df.iloc[:,:num_features])\nmin_max_scaler = preprocessing.MinMaxScaler()\nwrist_X= min_max_scaler.fit_transform(wrist_df.iloc[:,:num_features])\nwrist_X_df = pd.DataFrame(wrist_X, columns=(wrist_df.iloc[:,:num_features]).columns)\n\n\n\n#wrist_df\n')
         
         #Obtain average and standard deviation values
         timer_avg = (np.mean(timer.timings))
@@ -333,5 +358,7 @@ if __name__ == "__main__":
 
     #Save data in .txt file
     get_ipython().run_cell_magic('capture', 'cap --no-stderr', 'print (time_avg_array)\nprint(time_std_array)')
-    with open('Multiprocessing_Training_processing_times_'+str(number_components)+'Comp_'+str(best_features_number)+'Features.txt', 'w') as f:
-        f.write(cap.stdout) 
+    with open('Training_processing_times_'+str(number_components)+'Comp_'+str(best_features_number)+'Features.txt', 'w') as f:
+        f.write(cap.stdout)    
+
+
