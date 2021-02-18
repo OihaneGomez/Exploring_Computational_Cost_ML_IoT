@@ -44,8 +44,7 @@ best_features_number=162
 root = '../HMP_Dataset/' #Regular Sampling
 #root = '../HMP_Dataset_Downsample/' #Downsample
 #----------------------------------------------------------
-#mp.freeze_support()  # needed for Windows
-p = mp.Pool(4)
+
 
 process_pool = mp.Pool(processes=mp.cpu_count())
 

@@ -38,7 +38,7 @@ import functools
 #------------------Change these variables:------------------
 #Number of signal components 
 #(3 for XYZ, 1 for X)
-number_components = 1
+number_components = 3
 
 #Best feature number 
 #(Max 162 for XYZ, 54 for X)
