@@ -334,5 +334,5 @@ if __name__ == "__main__":
 
     #Save data in .txt file
     get_ipython().run_cell_magic('capture', 'cap --no-stderr', 'print (time_avg_array)\nprint(time_std_array)')
-    with open('Training_processing_times_'+str(number_components)+'Comp_'+str(best_features_number)+'Features.txt', 'w') as f:
+    with open('Multiprocessing_Training_processing_times_'+str(number_components)+'Comp_'+str(best_features_number)+'Features.txt', 'w') as f:
         f.write(cap.stdout) 
