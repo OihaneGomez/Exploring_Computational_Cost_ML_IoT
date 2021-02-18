@@ -31,7 +31,7 @@ from sklearn.pipeline import Pipeline
 #------------------Change these variables:------------------
 #Number of signal components 
 #(3 for XYZ, 1 for X)
-number_components = 3
+number_components = 1
 
 #Best feature number 
 #(Max 162 for XYZ, 54 for X)
@@ -100,39 +100,36 @@ def reformat(files, cls, features):
     appended_features_all=[]
     appended_features_df = pd.DataFrame()
     for f in files:
-        #Read every txt file (Number of row value_x, Value_Y, Value_Z)
-        data = pd.read_csv(f, sep=' ', header=None, names=['x', 'y', 'z']) 
-       
-        #Conversion from 0-63 to m/s^2
-        df_x = -14.709 + (data.iloc[:,0:1]/63)*(2*14.709)
-        df_y = -14.709 + (data.iloc[:,1:2]/63)*(2*14.709)
-        df_z = -14.709 + (data.iloc[:,2:3]/63)*(2*14.709)
-        
-    
-        #Median filtering
-        x = np.median(strided_app(df_x.values.flatten(), 3,1),axis=1)
-        y = np.median(strided_app(df_y.values.flatten(), 3,1),axis=1)
-        z = np.median(strided_app(df_z.values.flatten(), 3,1),axis=1)
-        
-        df_x = pd.DataFrame(x, columns=['x'])
-        df_y = pd.DataFrame(y, columns=['y'])
-        df_z = pd.DataFrame(z, columns=['z'])
-        
-        data_all=pd.concat([df_x.reset_index(drop=True), df_y.reset_index(drop=True), df_z.reset_index(drop=True)], axis=1)
-
-       
-        data_x = data_all.iloc[:,0:1].values
-        data_y = data_all.iloc[:,1:2].values
-        data_z = data_all.iloc[:,2:3].values
-        
-        #Divide data in segments
-        split_index=5 #Number of segments
-        data_split_x=np.array_split(data_x, split_index)
-        data_split_y=np.array_split(data_y, split_index)
-        data_split_z=np.array_split(data_z, split_index)
-        
-        #Features Calculation
         if number_components == 3: #FOR XYZ
+            data = pd.read_csv(f, sep=' ', header=None, names=['x', 'y', 'z']) 
+            
+            #Conversion from 0-63 to m/s^2
+            df_x = -14.709 + (data.iloc[:,0:1]/63)*(2*14.709)
+            df_y = -14.709 + (data.iloc[:,1:2]/63)*(2*14.709)
+            df_z = -14.709 + (data.iloc[:,2:3]/63)*(2*14.709)
+            
+        
+            #Median filtering
+            x = np.median(strided_app(df_x.values.flatten(), 3,1),axis=1)
+            y = np.median(strided_app(df_y.values.flatten(), 3,1),axis=1)
+            z = np.median(strided_app(df_z.values.flatten(), 3,1),axis=1)
+            
+            df_x = pd.DataFrame(x, columns=['x'])
+            df_y = pd.DataFrame(y, columns=['y'])
+            df_z = pd.DataFrame(z, columns=['z'])
+                    
+            data_x = df_x.values
+            data_y = df_y.values
+            data_z = df_z.values
+            
+            #Divide data in segments
+            split_index=5 #Number of segments
+            data_split_x=np.array_split(data_x, split_index)
+            data_split_y=np.array_split(data_y, split_index)
+            data_split_z=np.array_split(data_z, split_index)
+            
+            #Features Calculation
+
             appended_before=['data_split_x[2].min(axis=0)', 'data_x.min(axis=0)','data_split_x[2].mean(axis=0)',
             'np.median(data_split_x[2],axis=0)','data_split_x[1].min(axis=0)','data_split_x[1].mean(axis=0)',
             'data_x.mean(axis=0)','np.median(data_split_x[1],axis=0)','np.median(data_x,axis=0)',
@@ -188,6 +185,24 @@ def reformat(files, cls, features):
             'kurtosis(data_split_z[3],axis=0)','data_split_y[0].std(axis=0)','skew(data_split_x[4],axis=0)',
             'skew(data_split_x[0],axis=0)','skew(data_split_z[4],axis=0)','data_y.min(axis=0)']
         else: # For the most representative component (X)
+
+
+            data = pd.read_csv(f, sep=' ', header=None, names=['x']) 
+            
+            #Conversion from 0-63 to m/s^2
+            df_x = -14.709 + (data.iloc[:,0:1]/63)*(2*14.709)
+            
+            #Median filtering
+            x = np.median(strided_app(df_x.values.flatten(), 3,1),axis=1)
+
+            df_x = pd.DataFrame(x, columns=['x'])
+  
+            data_x = df_x.values
+
+            #Divide data in segments
+            split_index=5 #Number of segments
+            data_split_x=np.array_split(data_x, split_index)
+  
             appended_before=['data_split_x[2].min(axis=0)','data_x.min(axis=0)','data_split_x[2].mean(axis=0)',
             'np.median(data_split_x[2],axis=0)','data_split_x[1].min(axis=0)','data_split_x[1].mean(axis=0)',
             'data_x.mean(axis=0)','np.median(data_split_x[1],axis=0)','np.median(data_x,axis=0)',
@@ -206,7 +221,7 @@ def reformat(files, cls, features):
             'skew(data_x,axis=0)','kurtosis(data_split_x[0],axis=0)','kurtosis(data_split_x[1],axis=0)',
             'kurtosis(data_split_x[3],axis=0)','data_split_x[3].std(axis=0)','kurtosis(data_split_x[4],axis=0)',
             'data_split_x[3].var(axis=0)','skew(data_split_x[4],axis=0)','skew(data_split_x[0],axis=0)']
-        
+
         #Create initial_features_matrix
         appended_features_split=[]
         appended_features=[]
