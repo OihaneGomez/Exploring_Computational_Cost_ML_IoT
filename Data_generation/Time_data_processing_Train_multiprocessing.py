@@ -341,7 +341,7 @@ if __name__ == "__main__":
 
     
 
-    for i in range (0,best_features_number):
+    for i in range (160,best_features_number):
         print ("Number of features: "+str(i+1))
         #Measure data processing times for training the model
         timer = get_ipython().run_cell_magic('timeit', '-n 10 -r 10 -o', '\nwrist_df = gather(wrist_class,features=(i+1))\nnum_features=len(wrist_df.columns)-1\nwrist_Y = np.asarray(wrist_df.iloc[:-1])\nwrist_X = np.asarray(wrist_df.iloc[:,:num_features])\nmin_max_scaler = preprocessing.MinMaxScaler()\nwrist_X= min_max_scaler.fit_transform(wrist_df.iloc[:,:num_features])\nwrist_X_df = pd.DataFrame(wrist_X, columns=(wrist_df.iloc[:,:num_features]).columns)\n\n\n\n#wrist_df\n')
@@ -358,7 +358,7 @@ if __name__ == "__main__":
 
     #Save data in .txt file
     get_ipython().run_cell_magic('capture', 'cap --no-stderr', 'print (time_avg_array)\nprint(time_std_array)')
-    with open('Training_processing_times_'+str(number_components)+'Comp_'+str(best_features_number)+'Features.txt', 'w') as f:
+    with open('Multiprocessing_Training_processing_times_'+str(number_components)+'Comp_'+str(best_features_number)+'Features.txt', 'w') as f:
         f.write(cap.stdout)    
 
 
